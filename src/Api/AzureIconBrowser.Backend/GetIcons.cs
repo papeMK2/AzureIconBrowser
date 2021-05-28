@@ -15,6 +15,7 @@ using System.Linq;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using AzureIconBrowser.Backend.Options;
+using Microsoft.Extensions.Configuration;
 
 [assembly: FunctionsStartup(typeof(AzureIconBrowser.Backend.Startup))]
 
@@ -23,9 +24,14 @@ namespace AzureIconBrowser.Backend
     public class GetIcons
     {
         private readonly IconStorageOptions _options;
-        public GetIcons(IOptions<IconStorageOptions> options)
+        public GetIcons(IConfiguration configuration)
         {
-            _options = options.Value;
+            _options = new IconStorageOptions
+            {
+                BaseUrl = configuration["BaseURl"],
+                ContainerName = configuration["ContainerName"],
+                StorageConnectionString = configuration["StorageConnectionString"]
+            };
         }
 
         [FunctionName("GetIcons")]

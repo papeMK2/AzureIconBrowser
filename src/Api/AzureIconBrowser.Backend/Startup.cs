@@ -15,9 +15,6 @@ namespace AzureIconBrowser.Backend
             var context = builder.GetContext();
             var services = builder.Services;
             var configuration = context.Configuration;
-
-            services.Configure<IconStorageOptions>(configuration.GetSection("IconStorage"));
-
         }
     }
 }
