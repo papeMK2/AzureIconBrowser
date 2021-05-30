@@ -106,25 +106,33 @@ rel="stylesheet" />
                     })
             },
             copyClipboard: async function(imagePath) {
+                const jsFrame = new JSFrame()
                 const res = await axios({
                     url: imagePath,
                     method: 'GET',
                     responseType: 'blob'
                 }).then((res) => {
+                    console.log('axios')
                     return res.data;
                 })
                 const blob = res
-                const jsFrame = new JSFrame()
-
                 await navigator.clipboard.write([
                     new ClipboardItem({
                         [blob.type]: blob
                     })
-                ])
-                .then(res => {
+                ]).then(res => {
+                    console.log('clipboard')
                     // トースト通知
                     jsFrame.showToast({
                         html: 'Copied', align: 'top', duration: 2000
+                    })
+                }).catch((err) => {
+                    console.log(err)
+                    jsFrame.showToast({
+                        style: {
+                            backgroundColor: 'rgbe(255, 0, 0, 0.8)'
+                        },
+                        html: err
                     })
                 })
             }
