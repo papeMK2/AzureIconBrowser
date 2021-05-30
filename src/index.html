@@ -106,11 +106,16 @@ rel="stylesheet" />
                     })
             },
             copyClipboard: async function(imagePath) {
-                const data = await fetch(imagePath)
-                const blob = await data.blob()
+                const res = await axios({
+                    url: imagePath,
+                    method: 'GET',
+                    responseType: 'blob'
+                }).then((res) => {
+                    return res.data;
+                })
+                const blob = res
                 const jsFrame = new JSFrame()
 
-                var obj = new DataTransfer()
                 await navigator.clipboard.write([
                     new ClipboardItem({
                         [blob.type]: blob
